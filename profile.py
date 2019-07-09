@@ -1,7 +1,7 @@
 from .fetcher import Fetcher
 
 
-class User(Fetcher):
+class Profile(Fetcher):
     URL = 'https://www.instagram.com/%s/'
 
     def __init__(self, username):

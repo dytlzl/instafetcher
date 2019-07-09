@@ -2,6 +2,7 @@ import requests
 import re
 import json
 import time
+from .post import Post
 
 
 class Fetcher:
@@ -32,7 +33,9 @@ class Fetcher:
         dic_main = dic['entry_data'][self.json_key[0]][0]['graphql'][self.json_key[1]][self.json_key[2]]
         edges = dic_main['edges']
         self.after = dic_main['page_info']['end_cursor']
-        [print(i['node']['id']) for i in edges]
+        for i in edges:
+            post = Post(i['node']['shortcode'])
+            post.fetch()
         try:
             self.user_id = dic['entry_data']['ProfilePage'][0]['graphql']['user']['id']
         except KeyError:
@@ -43,7 +46,9 @@ class Fetcher:
         dic = res.json()
         edges = dic['data'][self.json_key[1]][self.json_key[2]]['edges']
         self.after = dic['data'][self.json_key[1]][self.json_key[2]]['page_info']['end_cursor']
-        [print(i['node']['id']) for i in edges]
+        for i in edges:
+            post = Post(i['node']['shortcode'])
+            post.fetch()
 
     def fetch(self):
         self.fetch_html()
