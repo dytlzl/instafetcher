@@ -31,10 +31,11 @@ class Post:
         self.parse_media(dic_main)
 
     def parse_media(self, dic):
-        if dic['__typename'] == 'GraphImage':
+        typename = dic['__typename']
+        if typename == 'GraphImage':
             print(dic['display_url'])
-        elif dic['__typename'] == 'GraphVideo':
+        elif typename == 'GraphVideo':
             print(dic['video_url'])
-        elif dic['__typename'] == 'GraphSidecar':
+        elif typename == 'GraphSidecar':
             for i in dic['edge_sidecar_to_children']['edges']:
                 self.parse_media(i['node'])
