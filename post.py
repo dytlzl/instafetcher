@@ -7,8 +7,7 @@ import os
 class Post:
     URL = 'https://www.instagram.com/p/%s/'
 
-    def __init__(self, shortcode):
-        super().__init__()
+    def __init__(self, shortcode, sub_directory = ''):
         self.headers = {
             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) "
                           "AppleWebKit/537.36 (KHTML, like Gecko) "
@@ -20,7 +19,8 @@ class Post:
         self.json_key = ['PostPage', 'shortcode_media']
         self.download_directory = './instagram_download/'
         self.create_dir()
-        self.download_directory += ''
+        self.download_directory += sub_directory + '/'
+        self.create_dir()
 
     def fetch(self):
         res = requests.get(self.url, headers=self.headers)

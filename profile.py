@@ -12,6 +12,7 @@ class Profile(Fetcher):
             'query_hash': 'f2405b236d85e8296cf30347c9f08c2a'
         }
         self.json_key = ['ProfilePage', 'user', 'edge_owner_to_timeline_media']
+        self.sub_directory = 'profile_' + username
 
     def fetch_json(self):
         self.params['variables'] = '{"id":"%s","first":%s,"after":"%s"}' % (self.user_id, self.first, self.after)

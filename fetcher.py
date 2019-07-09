@@ -21,6 +21,7 @@ class Fetcher:
         self.json_key = []
         self.user_id = None
         self.url = None
+        self.sub_directory = None
 
     def fetch_html(self):
         res = requests.get(self.url, headers=self.headers)
@@ -34,7 +35,7 @@ class Fetcher:
         edges = dic_main['edges']
         self.after = dic_main['page_info']['end_cursor']
         for i in edges:
-            post = Post(i['node']['shortcode'])
+            post = Post(i['node']['shortcode'], self.sub_directory)
             post.fetch()
         try:
             self.user_id = dic['entry_data']['ProfilePage'][0]['graphql']['user']['id']
@@ -47,7 +48,7 @@ class Fetcher:
         edges = dic['data'][self.json_key[1]][self.json_key[2]]['edges']
         self.after = dic['data'][self.json_key[1]][self.json_key[2]]['page_info']['end_cursor']
         for i in edges:
-            post = Post(i['node']['shortcode'])
+            post = Post(i['node']['shortcode'], self.sub_directory)
             post.fetch()
 
     def fetch(self):
