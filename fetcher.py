@@ -18,7 +18,7 @@ class Fetcher:
         self.params = None
         self.first = 12
         self.after = None
-        self.json_key = None
+        self.json_key = []
         self.user_id = None
         self.url = None
 
