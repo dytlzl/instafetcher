@@ -26,7 +26,8 @@ class Post:
         html = res.text
         match = re.search(r'<script type="text/javascript">window._sharedData = (.*?);</script>', html)
         if not match:
-            return None
+            print('Could not find "sharedData".')
+            return
         json_text = match.groups()[0]
         dic = json.loads(json_text)
         dic_main = dic['entry_data'][self.json_key[0]][0]['graphql'][self.json_key[1]]
