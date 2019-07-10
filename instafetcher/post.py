@@ -7,7 +7,7 @@ import os
 class Post:
     URL = 'https://www.instagram.com/p/%s/'
 
-    def __init__(self, shortcode, sub_directory = ''):
+    def __init__(self, shortcode, mode, sub_directory):
         self.headers = {
             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) "
                           "AppleWebKit/537.36 (KHTML, like Gecko) "
@@ -17,10 +17,8 @@ class Post:
         self.timestamp = None
         self.url = self.URL % shortcode
         self.json_key = ['PostPage', 'shortcode_media']
-        self.download_directory = './instagram_download/'
-        self.create_dir()
-        self.download_directory += sub_directory + '/'
-        self.create_dir()
+        self.mode = mode
+        self.sub_directory = sub_directory
 
     def fetch(self):
         res = requests.get(self.url, headers=self.headers)
@@ -32,7 +30,21 @@ class Post:
         dic = json.loads(json_text)
         dic_main = dic['entry_data'][self.json_key[0]][0]['graphql'][self.json_key[1]]
         self.timestamp = dic_main['taken_at_timestamp']
-        self.parse_media(dic_main)
+        if 'd' in self.mode:
+            self.download_directory = './instagram_download/'
+            self.create_dir()
+            if self.sub_directory is None:
+                self.sub_directory = 'inbox'
+            self.download_directory += self.sub_directory + '/'
+            self.create_dir()
+            self.parse_media(dic_main)
+        if 'i' in self.mode:
+            info_list = [dic_main[i] for i in [
+                '__typename',
+                'shortcode',
+                'display_url', 
+                'taken_at_timestamp']]
+            print(info_list)
 
     def parse_media(self, dic):
         typename = dic['__typename']
@@ -46,11 +58,12 @@ class Post:
                 self.parse_media(i['node'])
 
     def download_media(self, url):
-        filepath = self.download_directory + url.split('/')[-1].split('?')[0]
+        basename = url.split('/')[-1].split('?')[0]
+        filepath = self.download_directory + basename
         if os.path.exists(filepath):
-            print('\r"%s" Already Exists.' % (filepath), end='')
+            print('\r"%s" Already Exists.' % (basename), end='')
         else:
-            print('\rDownload "%s" to "%s" ...' % (url, filepath), end='')
+            print('\rDownload to "%s" ...' % (basename), end='')
             res = requests.get(url, timeout=10)
             with open(filepath, mode='wb') as f:
                 f.write(res.content)

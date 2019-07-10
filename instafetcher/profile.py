@@ -4,8 +4,8 @@ from .fetcher import Fetcher
 class Profile(Fetcher):
     URL = 'https://www.instagram.com/%s/'
 
-    def __init__(self, username):
-        super().__init__()
+    def __init__(self, username, mode='di', time_interval=0.1):
+        super().__init__(mode, time_interval)
         self.username = username
         self.url = self.URL % username
         self.params = {
@@ -13,6 +13,7 @@ class Profile(Fetcher):
         }
         self.json_key = ['ProfilePage', 'user', 'edge_owner_to_timeline_media']
         self.sub_directory = 'profile_' + username
+        self.mode = mode
 
     def fetch_json(self):
         self.params['variables'] = '{"id":"%s","first":%s,"after":"%s"}' % (self.user_id, self.first, self.after)
