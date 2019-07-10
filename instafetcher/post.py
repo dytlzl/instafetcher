@@ -2,6 +2,7 @@ import requests
 import re
 import json
 import os
+from datetime import datetime
 
 
 class Post:
@@ -30,6 +31,14 @@ class Post:
         dic = json.loads(json_text)
         dic_main = dic['entry_data'][self.json_key[0]][0]['graphql'][self.json_key[1]]
         self.timestamp = dic_main['taken_at_timestamp']
+        if 'i' in self.mode:
+            info_list = [dic_main[i] for i in [
+                '__typename',
+                'shortcode',
+                'display_url', 
+                'taken_at_timestamp']]
+            info_list += [datetime.fromtimestamp(self.timestamp)]
+            print(info_list)
         if 'd' in self.mode:
             self.download_directory = './instagram_download/'
             self.create_dir()
@@ -38,13 +47,8 @@ class Post:
             self.download_directory += self.sub_directory + '/'
             self.create_dir()
             self.parse_media(dic_main)
-        if 'i' in self.mode:
-            info_list = [dic_main[i] for i in [
-                '__typename',
-                'shortcode',
-                'display_url', 
-                'taken_at_timestamp']]
-            print(info_list)
+            if 'i' in self.mode:
+                print('')
 
     def parse_media(self, dic):
         typename = dic['__typename']
@@ -61,9 +65,9 @@ class Post:
         basename = url.split('/')[-1].split('?')[0]
         filepath = self.download_directory + basename
         if os.path.exists(filepath):
-            print('\r"%s" Already Exists.' % (basename), end='')
+            print('\r"%s" taken at %s Already Exists.' % (basename, datetime.fromtimestamp(self.timestamp)), end='')
         else:
-            print('\rDownload to "%s" ...' % (basename), end='')
+            print('\rDownload "%s" taken at %s ...' % (basename, datetime.fromtimestamp(self.timestamp)), end='')
             res = requests.get(url, timeout=10)
             with open(filepath, mode='wb') as f:
                 f.write(res.content)
