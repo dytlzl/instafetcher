@@ -19,6 +19,7 @@ class Post:
         self.url = self.URL % shortcode
         self.json_key = ['PostPage', 'shortcode_media']
         self.mode = mode
+        self.download_directory = './instagram_download/'
         self.sub_directory = sub_directory
 
     def fetch(self):
@@ -41,7 +42,6 @@ class Post:
             info_list += [datetime.fromtimestamp(self.timestamp)]
             print(info_list)
         if 'd' in self.mode:
-            self.download_directory = './instagram_download/'
             self.create_dir()
             if self.sub_directory is None:
                 self.sub_directory = 'inbox'

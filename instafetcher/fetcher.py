@@ -56,8 +56,15 @@ class Fetcher:
             post = Post(i['node']['shortcode'], self.mode, self.sub_directory)
             post.fetch()
 
-
     def fetch(self):
         self.fetch_html()
         while self.after is not None:
             self.fetch_json()
+
+    def fetch_query_hash(self):
+        """for debugging"""
+        url = 'https://www.instagram.com/static/bundles/es6/ProfilePageContainer.js/229d3e1a78c4.js'
+        res = requests.get(url, headers=self.headers)
+        js = res.text
+        matches = re.findall(r'queryId:"(.*?)"', js)
+        print(matches)
