@@ -12,9 +12,10 @@ class Tag(Fetcher):
             'query_hash': 'f92f56d47dc7a55b606908374b43a314'
         }
         self.json_key = ['TagPage', 'hashtag', 'edge_hashtag_to_media']
-        self.sub_directory = 'tag_' + tag_name
+        self.sub_directory = 'tags/' + tag_name
         self.mode = mode
 
     def fetch_json(self):
-        self.params['variables'] = '{"tag_name":"%s","first":%s,"after":"%s"}' % (self.name, self.first, self.after)
+        self.params['variables'] = '{"tag_name":"%s","first":%s,"after":"%s"}' % (
+            self.name, self.first, self.after)
         super().fetch_json()

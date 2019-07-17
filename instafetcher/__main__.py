@@ -17,18 +17,18 @@ def main():
 
 def fetch(url):
     try:
-        if "https://www.instagram.com/p/" in url:
-            shortcode = re.search(r'https://www\.instagram.com/p/(.*?)/', url).groups()[0]
+        if "instagram.com/p/" in url:
+            shortcode = re.search(r'instagram.com/p/(.*?)/', url).groups()[0]
             instafetcher.Post(shortcode).fetch()
-        elif "https://www.instagram.com/explore/tags/" in url:
-            tag = re.search(r'https://www\.instagram.com/explore/tags/(.*?)/', url).groups()[0]
+        elif "instagram.com/explore/tags/" in url:
+            tag = re.search(r'instagram.com/explore/tags/(.*?)/', url).groups()[0]
             instafetcher.Tag(tag).fetch()
-        elif "https://www.instagram.com/" in url:
-            username = re.search(r'https://www\.instagram.com/(.*?)/', url).groups()[0]
+        elif "instagram.com/" in url:
+            username = re.search(r'instagram.com/(.*?)/', url).groups()[0]
             instafetcher.Profile(username).fetch()
         else:
             print('Invalid URL')
-    except IndexError:
+    except (IndexError, AttributeError):
         print('Invalid URL')
 
 
