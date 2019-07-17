@@ -8,7 +8,7 @@ from datetime import datetime
 class Post:
     URL = 'https://www.instagram.com/p/%s/'
 
-    def __init__(self, shortcode, mode, sub_directory):
+    def __init__(self, shortcode, mode='di', sub_directory="posts"):
         self.headers = {
             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) "
                           "AppleWebKit/537.36 (KHTML, like Gecko) "
@@ -25,7 +25,7 @@ class Post:
     def fetch(self):
         res = requests.get(self.url, headers=self.headers)
         html = res.text
-        match = re.search(r'<script type="text/javascript">window._sharedData = (.*?);</script>', html)
+        match = re.search(r'<script type="text/javascript">window\._sharedData = (.*?);</script>', html)
         if not match:
             print('Could not find "sharedData".')
             return

@@ -28,7 +28,7 @@ class Fetcher:
     def fetch_html(self):
         res = requests.get(self.url, headers=self.headers)
         html = res.text
-        match = re.search(r'<script type="text/javascript">window._sharedData = (.*?);</script>', html)
+        match = re.search(r'<script type="text/javascript">window\._sharedData = (.*?);</script>', html)
         if not match:
             print('Could not find "sharedData".')
             return
