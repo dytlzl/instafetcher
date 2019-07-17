@@ -42,8 +42,8 @@ class Post:
             list_to_print += [dic_main[i] for i in (
                 '__typename',
                 'display_url')]
-            list_to_print.append(str(datetime.fromtimestamp(self.timestamp)))
-            print('\n'.join(list_to_print))
+            list_to_print.append(datetime.fromtimestamp(self.timestamp))
+            print('\n'.join([str(i) for i in list_to_print]))
         if 'd' in self.mode:
             os.makedirs(self.download_directory, exist_ok=True)
             self.parse_media(dic_main)
