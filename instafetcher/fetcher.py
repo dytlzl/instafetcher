@@ -9,7 +9,7 @@ from .post import Post
 class Fetcher:
     URL = 'https://www.instagram.com/explore/tags/%s/'
 
-    def __init__(self, mode, time_interval, max_count=50):
+    def __init__(self, mode, time_interval, max_count=None):
         self.headers = {
             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) "
                           "AppleWebKit/537.36 (KHTML, like Gecko) "
@@ -63,8 +63,9 @@ class Fetcher:
             post = Post(i['node']['shortcode'], self.mode, self.sub_directory)
             post.fetch()
             self.count += 1
-            if self.count >= self.max_count:
-                sys.exit()
+            if self.max_count is not None:
+                if self.count >= self.max_count:
+                    sys.exit()
 
     def fetch(self):
         self.fetch_html()
