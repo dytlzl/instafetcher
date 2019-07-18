@@ -68,16 +68,12 @@ class Post:
             filepath += '/'
         filepath += basename
         if os.path.exists(filepath):
-            print('\r"%s" taken at %s Already Exists.' %
-                  (basename, datetime.fromtimestamp(self.timestamp)), end='')
+            print('\r"%s" Already Exists.' %
+                  (basename), end='')
         else:
-            print('\rDownload "%s" taken at %s ...' %
-                  (basename, datetime.fromtimestamp(self.timestamp)), end='')
+            print('\rDownload "%s"...' %
+                  (basename), end='')
             res = requests.get(url, timeout=10)
             with open(filepath, mode='wb') as f:
                 f.write(res.content)
             os.utime(filepath, (self.timestamp, self.timestamp))
-
-    def create_dir(self):
-        if not os.path.exists(self.download_directory):
-            os.mkdir(self.download_directory)
