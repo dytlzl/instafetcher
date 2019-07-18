@@ -37,7 +37,7 @@ class Post:
                                      ][0]['graphql'][self.json_key[1]]
         self.timestamp = dic_main['taken_at_timestamp']
         if 'i' in self.mode:
-            list_to_print = []
+            list_to_print = list()
             list_to_print.append(self.url)
             list_to_print += [dic_main[i] for i in (
                 '__typename',
@@ -68,11 +68,9 @@ class Post:
             filepath += '/'
         filepath += basename
         if os.path.exists(filepath):
-            print('\r"%s" Already Exists.' %
-                  (basename), end='')
+            print('\r"%s" Already Exists.' % basename, end='')
         else:
-            print('\rDownload "%s"...' %
-                  (basename), end='')
+            print('\rDownload "%s"...' % basename, end='')
             res = requests.get(url, timeout=10)
             with open(filepath, mode='wb') as f:
                 f.write(res.content)
